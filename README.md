@@ -3,9 +3,9 @@
 Official REST client for the [dogabot public API](https://docs.dogabot.com/).
 
 ```bash
-# PyPI publish pending — until then, install from GitHub:
-pip install "dogabot-sdk @ git+https://github.com/dogabot/dogabot-sdk-python.git"
-# After PyPI: pip install dogabot-sdk  (or: uv add dogabot-sdk)
+pip install dogabot-sdk
+# or: uv add dogabot-sdk
+# from source: pip install "dogabot-sdk @ git+https://github.com/dogabot/dogabot-sdk-python.git"
 ```
 
 ```python
