@@ -10,11 +10,14 @@ OPERATION_IDS: tuple[str, ...] = (
     "getMeStatistics",
     "getMePositions",
     "getMePositionlegs",
+    "getMeAvailablecash",
     "getMeOrders",
     "getMeSignals",
     "getMeEmitters",
     "postMeEmittersSummary",
     "postAutomationsSummary",
+    "postAutomationsStatuscounts",
+    "postAutomationsSummaryByids",
     "getFollowers",
     "postFollowers",
     "getFollowersById",
@@ -55,6 +58,7 @@ OPERATION_IDS: tuple[str, ...] = (
     "getBacktestQuota",
     "getBacktests",
     "getBacktestsSummary",
+    "getBacktestCommunityexamples",
     "getBacktestByJob_id",
     "getBacktestSignalsByJob_id",
     "getBacktestBulkSeed",
@@ -86,7 +90,9 @@ OPERATION_IDS: tuple[str, ...] = (
     "getExchangeTrades",
     "getExchangeIncome",
     "getExchangeOpenablenotional",
+    "getExchangeLeveragecapabilities",
     "postExchangeLeverage",
+    "postExchangeMarginmode",
     "postExchangeCancelorder",
     "postExchangeCancelorders",
     "getCredentials",
@@ -118,6 +124,9 @@ OPERATION_IDS: tuple[str, ...] = (
     "postBacktestBulkBatchesRerunByBatch_id",
     "postBacktestBulkBatchesCancelByBatch_id",
     "postBacktestCancelByJob_id",
+    "postBacktestCommunityexampleByJob_id",
+    "patchBacktestCommunityexampleByJob_id",
+    "deleteBacktestCommunityexampleByJob_id",
     "postTerminalPlaceorder",
     "postTerminalCancelorder",
     "getAiChatQuota",
@@ -167,6 +176,14 @@ class Resources:
             options=options,
         )
 
+    def get_me_availablecash(self, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/me/available-cash"
+        return self._client.request(
+            method="GET",
+            path=path,
+            options=options,
+        )
+
     def get_me_orders(self, *, options: RequestOptions | None = None) -> JsonValue:
         path = "/api/v1/me/orders"
         return self._client.request(
@@ -202,6 +219,24 @@ class Resources:
 
     def post_automations_summary(self, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
         path = "/api/v1/automations/summary"
+        return self._client.request(
+            method="POST",
+            path=path,
+            body=body,
+            options=options,
+        )
+
+    def post_automations_statuscounts(self, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/automations/status-counts"
+        return self._client.request(
+            method="POST",
+            path=path,
+            body=body,
+            options=options,
+        )
+
+    def post_automations_summary_byids(self, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/automations/summary/by-ids"
         return self._client.request(
             method="POST",
             path=path,
@@ -557,6 +592,14 @@ class Resources:
             options=options,
         )
 
+    def get_backtest_communityexamples(self, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/backtest/community-examples"
+        return self._client.request(
+            method="GET",
+            path=path,
+            options=options,
+        )
+
     def get_backtest_by_job_id(self, job_id: str | int, *, options: RequestOptions | None = None) -> JsonValue:
         path = "/api/v1/backtest/{job_id}".format(job_id=job_id)
         return self._client.request(
@@ -808,8 +851,26 @@ class Resources:
             options=options,
         )
 
+    def get_exchange_leveragecapabilities(self, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/exchange/leverage-capabilities"
+        return self._client.request(
+            method="GET",
+            path=path,
+            options=options,
+        )
+
     def post_exchange_leverage(self, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
         path = "/api/v1/exchange/leverage"
+        return self._client.request(
+            method="POST",
+            path=path,
+            body=body,
+            write=True,
+            options=options,
+        )
+
+    def post_exchange_marginmode(self, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/exchange/margin-mode"
         return self._client.request(
             method="POST",
             path=path,
@@ -1105,6 +1166,35 @@ class Resources:
         path = "/api/v1/backtest/{job_id}/cancel".format(job_id=job_id)
         return self._client.request(
             method="POST",
+            path=path,
+            write=True,
+            options=options,
+        )
+
+    def post_backtest_communityexample_by_job_id(self, job_id: str | int, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/backtest/{job_id}/community-example".format(job_id=job_id)
+        return self._client.request(
+            method="POST",
+            path=path,
+            body=body,
+            write=True,
+            options=options,
+        )
+
+    def patch_backtest_communityexample_by_job_id(self, job_id: str | int, body: JsonValue | None = None, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/backtest/{job_id}/community-example".format(job_id=job_id)
+        return self._client.request(
+            method="PATCH",
+            path=path,
+            body=body,
+            write=True,
+            options=options,
+        )
+
+    def delete_backtest_communityexample_by_job_id(self, job_id: str | int, *, options: RequestOptions | None = None) -> JsonValue:
+        path = "/api/v1/backtest/{job_id}/community-example".format(job_id=job_id)
+        return self._client.request(
+            method="DELETE",
             path=path,
             write=True,
             options=options,

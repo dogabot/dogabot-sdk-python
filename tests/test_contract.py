@@ -12,7 +12,7 @@ OPENAPI = json.loads((ROOT / "openapi.json").read_text())
 
 def test_openapi_matches_api_docs() -> None:
     # sdk/openapi.json is a copy of the docs build; drift means `make sdk-sync` was skipped.
-    docs = ROOT.parent / "js" / "api-docs" / "dist" / "openapi.json"
+    docs = ROOT.parent / "js" / "api-docs" / "public" / "openapi.json"
     if not docs.exists():  # published SDK repo has no js/api-docs
         return
     assert json.loads(docs.read_text()) == OPENAPI, "run `make sdk-sync`"
@@ -56,3 +56,18 @@ def test_dotnet_methods_exist() -> None:
         assert f'"{op["operationId"]}"' in text
         method = op["operationId"][0].upper() + op["operationId"][1:] + "Async"
         assert f"public Task<JsonElement> {method}(" in text
+
+
+def test_cli_catalog_and_dispatch() -> None:
+    catalog = ROOT / "cli" / "internal" / "cli" / "catalog_generated.go"
+    dispatch = ROOT / "cli" / "internal" / "cli" / "dispatch_generated.go"
+    if not catalog.exists():  # published SDK-only clone has no cli/
+        return
+    cat = catalog.read_text()
+    disp = dispatch.read_text()
+    for op in OPS:
+        oid = op["operationId"]
+        assert f'"{oid}"' in cat
+        assert f'case "{oid}":' in disp
+        method = oid[0].upper() + oid[1:]
+        assert f"c.{method}(" in disp
